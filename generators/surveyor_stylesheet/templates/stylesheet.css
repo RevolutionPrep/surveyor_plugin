@@ -1,0 +1,22 @@
+form.surveyor ul { list-style: none; margin: 5px 10px; padding: 0; }
+form.surveyor ul li { margin: 3px; padding: 10px; clear: both; background-color: #EEE; }
+form.surveyor ul li.hidden { display: none; }
+form.surveyor ul li ul { clear: both; }
+form.surveyor ul li label.question { font-weight: bold;display: block;}
+form.surveyor ul li label.is_required { font-size: 90%; color: red; display: block;}
+form.surveyor ul li.commit { clear: both; }
+form.surveyor ul li.commit input#surveyor_submit { clear: both; margin: 0; padding: 5px; }
+
+form.surveyor div.clear { clear: both; }
+form.surveyor div.hidden { display: none; }
+
+div.surveyor { clear: both; }
+div.surveyor ul { list-style: none; margin: 5px 10px; padding: 0; }
+div.surveyor ul li { margin: 3px; padding: 10px; background-color: #EEE;}
+div.surveyor ul li p { background-color: #DDD; padding: 10px; margin: 0; }
+div.surveyor ul li ul li.selected { font-weight: bold; background-color: #DDD; }
+div.surveyor ul li table { margin: 10px 0; background-color: #FFF; }
+div.surveyor ul li table tbody tr.even { background-color: #DDD; }
+div.surveyor ul li table tbody tr.short_answer td { text-align: left; }
+div.surveyor ul li table tbody tr th { text-align: center; padding: 5px 10px; }
+div.surveyor ul li table tbody tr td { text-align: center; padding: 5px 10px; }
