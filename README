@@ -30,4 +30,4 @@ The surveyor_redirect controller action is called upon successful submission of 
 
 The surveyor_failover controller action is called when the submission of the Surveyor form results in a validation error.  Validation errors currently consist only of question requirements.  These can be assigned by marking your survey questions as required in the Surveyor server application. When a question that is required remains unanswered upon submission, the Surveyor plugin will call the surveyor_failover action, allowing you to reset any state that is necessary, build error hashes, and then redirect or render the necessary views.
 
-Copyright (c) 2009 Revolution Pre, LLC, released under the MIT license
+Copyright (c) 2010 Revolution Prep, LLC, released under the MIT license
