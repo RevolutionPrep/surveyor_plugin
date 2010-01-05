@@ -43,7 +43,7 @@ module SurveyorModel
 		end
 		
 		def retrieve_gpa_of_respondents(instances, handle)
-			return Surveyor::ActiveResourceModels::QuestionResult.get(:gpa, :api_key => self.survey_key, :results => instances.collect { |i| i.surveyor_result_id }, :handle => handle).first["gpa_of_repondents"].to_f
+			return Surveyor::ActiveResourceModels::QuestionResult.get(:gpa, :api_key => self.survey_key, :results => instances.collect { |i| i.surveyor_result_id }, :handle => handle).first["gpa_of_respondents"].to_f
 		end
 
 		def retrieve_gpa_of_total(instances, handle)
