@@ -22,7 +22,7 @@ describe "SurveyorModel" do
 
 	describe "ClassMethod" do
 
-		describe "has_survey(options = {}) class method" do
+		describe "has_survey(options = {})" do
 
 			it "should have an API key" do
 				@test_survey.survey_key.should eql("api_key")
@@ -35,39 +35,49 @@ describe "SurveyorModel" do
 
 		end
 
-		describe "retrieve_results(instances, options = {}) class method" do
+		describe "retrieve_results(instances, options = {})" do
 
 			it "should retrieve survey results"
 
 		end
 
-		describe "retrieve_headcount(instances, handle, choice) class method" do
+		describe "retrieve_headcount(instances, handle, choice)" do
 
 			it "should retrieve the headcount of those who answered the specified question with the specified response"
 
 		end
 
-		describe "retrieve_percentage_of_respondents(instances, handle, choice) class method" do
+		describe "retrieve_percentage_of_respondents(instances, handle, choice)" do
 
 			it "should retrieve the percentage of respondents who answered the specified question with the specified response"
 
 		end
 
-		describe "retrieve_percentage_of_total(instances, handle, choice) class method" do
+		describe "retrieve_percentage_of_total(instances, handle, choice)" do
 
 			it "should retrieve the percentage of respondents who answered the specified question with the specified response including non-responses in the total"
 
 		end
 
-		describe "retrieve_gpa_of_respondents(instances, handle) class method" do
+		describe "retrieve_gpa_of_respondents(instances, handle)" do
 
 			it "should retrieve the GPA of the specified question given a total of people who responded"
 
 		end
 
-		describe "retrieve_gpa_of_total(instances, handle) class method" do
+		describe "retrieve_gpa_of_total(instances, handle)" do
 
 			it "should retrieve the GPA of the specified question given a total of all surveys"
+
+		end
+
+	end
+
+	describe "InstanceMethod" do
+
+		describe "retrieve_survey" do
+
+			it "should retrieve the survey from the Surveyor Server Application, applying the attribute accessors as necessary"
 
 		end
 
