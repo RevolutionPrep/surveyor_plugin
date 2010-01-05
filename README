@@ -1,0 +1,33 @@
+=Surveyor
+
+==Setup:
+
+	1.  Run script/generate surveyor MODEL_NAME
+	2.  Write your survey using the Surveyor application.
+	3.  Grab the 'api key' for your survey and place it into both the controller and model.
+	4.  Optional: You can override the surveyor_result_id column name with your own by adding :result => :your_column_name to the has_survey method call
+	5.  Fill in the correct attributes in the config/initializers/surveyor.rb file.
+	6.  Add map.surveyor_routes to the config/routes.rb file along with the routes for your controller handling the survey.
+	7.  Optional: Stylesheets can be added by running script/generate surveyor_stylesheets and adding <%= stylesheet_link_tag 'surveyor' %> to your view.
+
+==Example Usage:
+
+===display_survey():
+
+The display_survey helper is the main workhorse of the Surveyor plugin.  It provides both the ability to display a form with the survey questions, allowing them to fill-in and submit their results, as well as an interface for viewing survey results as a whole. Below are examples of these uses:
+
+	display_survey(Model.new)
+Here, we are going to display a survey form to allow our users to enter their answers and then submit their results.  Results get posted to the Surveyor server application, and then a unique identifier is returned to track that result.  The identifier is stored in the Model attribute called surveyor_result_id.  This becomes important when it comes time to display the results of a survey, which are explained below.
+
+	display_survey(@survey)
+In this example, we are going to display the results of a survey.  Results can be viewed on an individual basis, or as a collection.  This means that the parameter passed into display_survey can be a single Model object, or a collection thereof.  When passing in a single Model object, that object's surveyor_result_id is used to retrieve the individual results and display them on the page for the viewer.  In the case that an array of Model objects is passed in, a collection of the surveyor_result_ids for the objects passed in will be gathered, the results for these surveys will be retrieved, calculated, and displayed to the viewer.
+
+===surveyor_redirect():
+
+The surveyor_redirect controller action is called upon successful submission of the Surveyor form created by calling display_survey(Model.new).  When this form is submitted, the results are packaged up and sent to the Surveyor server application to be recorded.  When the server returns with the unique identifier for these results, this id is stored in the Model object's table row.  Other attributes can be added to this table to assist you in tracking and maintaining the survey results.  Examples might be to associate this Model object to a User, storing the user_id in this Model object's table row.  To do this, call up the Model object that has been created for this survey submission.  It is stored in the @surveyor instance variable.  Then, update attributes, validate, and use as you see fit.
+
+===surveyor_failover():
+
+The surveyor_failover controller action is called when the submission of the Surveyor form results in a validation error.  Validation errors currently consist only of question requirements.  These can be assigned by marking your survey questions as required in the Surveyor server application. When a question that is required remains unanswered upon submission, the Surveyor plugin will call the surveyor_failover action, allowing you to reset any state that is necessary, build error hashes, and then redirect or render the necessary views.
+
+Copyright (c) 2009 RevolutionPrep LLC, released under the MIT license
