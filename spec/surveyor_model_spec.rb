@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe "SurveyorModel" do
+describe SurveyorModel do
 
 	class TestSurvey < ActiveRecord::Base
 
@@ -57,6 +57,10 @@ describe "SurveyorModel" do
 			it "should allow for alias attributes of 'surveyor_result_id'" do
 				@test_survey.test_survey_result_id = 12345
 				@test_survey.surveyor_result_id.should eql(12345)
+			end
+
+			it "should include SurveyorModel's InstanceMethods module" do
+				@test_survey.methods.should include("retrieve_survey")
 			end
 
 		end
@@ -118,9 +122,9 @@ describe "SurveyorModel" do
 
 	describe "InstanceMethod" do
 
-		describe "retrieve_survey" do
+		describe "retrieve_survey()" do
 
-			it "should retrieve the survey from the Surveyor Server Application, applying the attribute accessors as necessary"
+			it "should retrieve the survey from the Surveyor Server Application, applying the instance's attribute accessors as necessary"
 
 		end
 
