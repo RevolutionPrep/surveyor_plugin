@@ -168,7 +168,7 @@ module SurveyorHelper
 				results << "</tr>"
 				question.choices.each do |choice|
 					results << "<tr class=#{cycle("even","odd")}>"
-					results << "<td>#{choice.value} (#{choice.grade_point})</td>"
+					results << "<td>#{choice.value}</td>" #{" (" + choice.grade_point + ")" if question.sub_type == "RatingQuestion"}
 					results << "<td>#{choice.response_count}</td>"
 					results << "<td>#{'%.2f' % (choice.percentage_of_respondents.to_f*100)}%</td>"
 					results << "<td>#{'%.2f' % (choice.percentage_of_total.to_f*100)}%</td>"

@@ -16,17 +16,12 @@ module SurveyorModel
 		def retrieve_results(instances, options = {})
 			unless options.empty?
 				typed_result = Surveyor::ActiveResourceModels::QuestionResult.find(1, :params => { :api_key => self.survey_key, :results => instances.collect { |i| i.surveyor_result_id }, :handles => options[:handles]})
-			else
-				typed_result = Surveyor::ActiveResourceModels::SurveyResult.find(:all, :params => { :api_key => self.survey_key, :results => instances.collect { |i| i.surveyor_result_id } }).first
-			end
-			case typed_result.class.to_s
-			when "Surveyor::SurveyResult"
-				return typed_result
-			when "Surveyor::QuestionResult"
 				result = Surveyor::ActiveResourceModels::SurveyResult.new
 				result.total_count = typed_result.total_count
 				result.questions = typed_result.questions
 				return result
+			else
+				return typed_result = Surveyor::ActiveResourceModels::SurveyResult.find(:all, :params => { :api_key => self.survey_key, :results => instances.collect { |i| i.surveyor_result_id } }).first
 			end
 		end
 		
