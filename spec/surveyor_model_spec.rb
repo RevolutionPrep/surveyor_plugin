@@ -2,132 +2,132 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe SurveyorModel do
 
-	class TestSurvey < ActiveRecord::Base
+  class TestSurvey < ActiveRecord::Base
 
-		has_survey :api_key => "api_key", :result => :test_survey_result_id
+    has_survey :api_key => "api_key", :result => :test_survey_result_id
 
-		def self.columns() @columns ||= []; end
+    def self.columns() @columns ||= []; end
 
-		def self.column(name, sql_type = nil, default = nil, null = true)
-			columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
-		end
+    def self.column(name, sql_type = nil, default = nil, null = true)
+      columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+    end
 
-		column :test_survey_result_id, :integer
+    column :test_survey_result_id, :integer
 
-	end
-	
-	before(:all) do
-		FakeWeb.allow_net_connect = false
-		FakeWeb.register_uri(:get,
-		"http://generic:password@localhost:3001/api/1_1/question_results/headcount.xml?api_key=api_key&choice=Green&handle=color&results%5B%5D=1&results%5B%5D=2&results%5B%5D=3",
-		:body => 	"<question_results type=\"array\">
-						<question_result>
-							<headcount>1</headcount>
-							<percentage_of_respondents>0.5</percentage_of_respondents>
-							<percentage_of_total>0.333333333</percentage_of_total>
-						</question_result>
-					</question_results>")
-		FakeWeb.register_uri(:get,
-							"http://generic:password@localhost:3001/api/1_1/question_results/gpa.xml?api_key=api_key&handle=color&results%5B%5D=1&results%5B%5D=2&results%5B%5D=3",
-		:body => 	"<question_results type=\"array\">
-						<question_result>
-							<gpa_of_respondents>4.0</gpa_of_respondents>
-							<gpa_of_total>3.95</gpa_of_total>
-						</question_result>
-					</question_results>")
+  end
 
-		@surveys = []
-		3.times do |i|
-			@surveys << TestSurvey.new(:test_survey_result_id => i+1)
-		end
-	end
+  before(:all) do
+    FakeWeb.allow_net_connect = false
+    FakeWeb.register_uri(:get,
+    "http://generic:password@localhost:3001/api/1_1/question_results/headcount.xml?api_key=api_key&choice=Green&handle=color&results%5B%5D=1&results%5B%5D=2&results%5B%5D=3",
+    :body => 	"<question_results type=\"array\">
+    <question_result>
+    <headcount>1</headcount>
+    <percentage_of_respondents>0.5</percentage_of_respondents>
+    <percentage_of_total>0.333333333</percentage_of_total>
+    </question_result>
+    </question_results>")
+    FakeWeb.register_uri(:get,
+    "http://generic:password@localhost:3001/api/1_1/question_results/gpa.xml?api_key=api_key&handle=color&results%5B%5D=1&results%5B%5D=2&results%5B%5D=3",
+    :body => 	"<question_results type=\"array\">
+    <question_result>
+    <gpa_of_respondents>4.0</gpa_of_respondents>
+    <gpa_of_total>3.95</gpa_of_total>
+    </question_result>
+    </question_results>")
 
-	before(:each) do
-		@test_survey = TestSurvey.new
-	end
+    @surveys = []
+    3.times do |i|
+      @surveys << TestSurvey.new(:test_survey_result_id => i+1)
+    end
+  end
 
-	describe "ClassMethod" do
+  before(:each) do
+    @test_survey = TestSurvey.new
+  end
 
-		describe "has_survey(options = {})" do
+  describe "ClassMethod" do
 
-			it "should have an API key" do
-				@test_survey.survey_key.should eql("api_key")
-			end
+    describe "has_survey(options = {})" do
 
-			it "should allow for alias attributes of 'surveyor_result_id'" do
-				@test_survey.test_survey_result_id = 12345
-				@test_survey.surveyor_result_id.should eql(12345)
-			end
+      it "should have an API key" do
+        @test_survey.survey_key.should eql("api_key")
+      end
 
-			it "should include SurveyorModel's InstanceMethods module" do
-				@test_survey.methods.should include("retrieve_survey")
-			end
+      it "should allow for alias attributes of 'surveyor_result_id'" do
+        @test_survey.test_survey_result_id = 12345
+        @test_survey.surveyor_result_id.should eql(12345)
+      end
 
-		end
+      it "should include SurveyorModel's InstanceMethods module" do
+        @test_survey.methods.should include("retrieve_survey")
+      end
 
-		describe "retrieve_results(instances, options = {})" do
+    end
 
-			it "should retrieve entire survey results"
+    describe "retrieve_results(instances, options = {})" do
 
-			it "should retrieve survey results for individual questions based on the question handles passed as options[:handle]"
+      it "should retrieve entire survey results"
 
-		end
+      it "should retrieve survey results for individual questions based on the question handles passed as options[:handle]"
 
-		describe "retrieve_headcount(instances, handle, choice)" do
+    end
 
-			it "should retrieve the headcount of those who answered the specified question with the specified response" do
-				count = TestSurvey.retrieve_headcount(@surveys, "color", "Green")
-				count.should eql(1.0)
-			end
+    describe "retrieve_headcount(instances, handle, choice)" do
 
-		end
+      it "should retrieve the headcount of those who answered the specified question with the specified response" do
+        count = TestSurvey.retrieve_headcount(@surveys, "color", "Green")
+        count.should eql(1.0)
+      end
 
-		describe "retrieve_percentage_of_respondents(instances, handle, choice)" do
+    end
 
-			it "should retrieve the percentage of respondents who answered the specified question with the specified response" do
-				percentage = TestSurvey.retrieve_percentage_of_respondents(@surveys, "color", "Green")
-				percentage.should eql(0.5)
-			end
+    describe "retrieve_percentage_of_respondents(instances, handle, choice)" do
 
-		end
+      it "should retrieve the percentage of respondents who answered the specified question with the specified response" do
+        percentage = TestSurvey.retrieve_percentage_of_respondents(@surveys, "color", "Green")
+        percentage.should eql(0.5)
+      end
 
-		describe "retrieve_percentage_of_total(instances, handle, choice)" do
+    end
 
-			it "should retrieve the percentage of respondents who answered the specified question with the specified response including non-responses in the total" do
-				percentage = TestSurvey.retrieve_percentage_of_total(@surveys, "color", "Green")
-				percentage.should eql(0.333333333)
-			end
+    describe "retrieve_percentage_of_total(instances, handle, choice)" do
 
-		end
+      it "should retrieve the percentage of respondents who answered the specified question with the specified response including non-responses in the total" do
+        percentage = TestSurvey.retrieve_percentage_of_total(@surveys, "color", "Green")
+        percentage.should eql(0.333333333)
+      end
 
-		describe "retrieve_gpa_of_respondents(instances, handle)" do
+    end
 
-			it "should retrieve the GPA of the specified question given a total of people who responded" do
-				percentage = TestSurvey.retrieve_gpa_of_respondents(@surveys, "color")
-				percentage.should eql(4.0)
-			end
+    describe "retrieve_gpa_of_respondents(instances, handle)" do
 
-		end
+      it "should retrieve the GPA of the specified question given a total of people who responded" do
+        percentage = TestSurvey.retrieve_gpa_of_respondents(@surveys, "color")
+        percentage.should eql(4.0)
+      end
 
-		describe "retrieve_gpa_of_total(instances, handle)" do
+    end
 
-			it "should retrieve the GPA of the specified question given a total of all surveys" do
-				percentage = TestSurvey.retrieve_gpa_of_total(@surveys, "color")
-				percentage.should eql(3.95)
-			end
+    describe "retrieve_gpa_of_total(instances, handle)" do
 
-		end
+      it "should retrieve the GPA of the specified question given a total of all surveys" do
+        percentage = TestSurvey.retrieve_gpa_of_total(@surveys, "color")
+        percentage.should eql(3.95)
+      end
 
-	end
+    end
 
-	describe "InstanceMethod" do
+  end
 
-		describe "retrieve_survey()" do
+  describe "InstanceMethod" do
 
-			it "should retrieve the survey from the Surveyor Server Application, applying the instance's attribute accessors as necessary"
+    describe "retrieve_survey()" do
 
-		end
+      it "should retrieve the survey from the Surveyor Server Application, applying the instance's attribute accessors as necessary"
 
-	end
+    end
+
+  end
 
 end

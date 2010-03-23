@@ -1,14 +1,16 @@
 require 'rake'
-require 'spec/rake/spectask'
+require 'rake/testtask'
 require 'rake/rdoctask'
 
-desc 'Default: run specs.'
-task :default => :spec
+desc 'Default: run unit tests.'
+task :default => :test
 
-desc 'Run the specs'
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_opts = ['--colour --format specdoc --loadby mtime --reverse -b']
-  t.spec_files = FileList['spec/**/*_spec.rb']
+desc 'Test the surveyor plugin.'
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'lib'
+  t.libs << 'test'
+  t.pattern = 'test/**/*_test.rb'
+  t.verbose = true
 end
 
 desc 'Generate documentation for the surveyor plugin.'

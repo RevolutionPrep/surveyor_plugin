@@ -1,8 +1,8 @@
 module SurveyorRoutes
 
-	def surveyor_routes
-		@set.add_route("/:controller/surveyor_create", {:action => "surveyor_create"})
-	end
+  def surveyor_routes
+    @set.add_route("/:controller/surveyor_create", {:action => "surveyor_create"})
+  end
 
 end
 
